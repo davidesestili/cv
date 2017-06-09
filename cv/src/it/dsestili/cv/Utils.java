@@ -144,16 +144,16 @@ public class Utils
 		}
 	}
 	
-	public static int getDownloadCouner(String fileName)
+	public static int getDownloadCounter(String fileName)
 	{
-		logger.debug("metodo getDownloadCouner()");
+		logger.debug("metodo getDownloadCounter()");
 		
 		openConnection();
 		
 		int count = 0;
 		try
 		{
-			String getDownloadCounerQuery = getProperty("query.getDownloadCouner");
+			String getDownloadCounerQuery = getProperty("query.getDownloadCounter");
 			
 			PreparedStatement statement = connection.prepareStatement(getDownloadCounerQuery);
 			statement.setString(1, fileName);
@@ -163,7 +163,7 @@ public class Utils
 		}
 		catch(Exception e)
 		{
-			logger.debug("Errore in getDownloadCouner()", e);
+			logger.debug("Errore in getDownloadCounter()", e);
 		}
 		finally
 		{

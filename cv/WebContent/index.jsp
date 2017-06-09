@@ -7,7 +7,7 @@
 <title>Download</title>
 </head>
 <body>
-<h1>Download counter: <%=it.dsestili.cv.Utils.getDownloadCouner("cv")%></h1>
+<h1>Download counter: <%=it.dsestili.cv.Utils.getDownloadCounter("cv")%></h1>
  <form method='GET' action='/cv/download'>
  	<input type="hidden" value="cv" name="param" />
     <input type="submit" value="Download curriculum">
