@@ -38,10 +38,6 @@ public class Download extends HttpServlet {
        
 	private static final Logger logger = Logger.getLogger(Download.class);
 	
-	private static final String PARAM = "param";
-	private static final String CV_PARAM = "cv";
-	private static final String CV_FILENAME = "cv.fileName";
-	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -54,14 +50,14 @@ public class Download extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String param = (String)request.getParameter(PARAM);
+		String param = (String)request.getParameter(Constants.PARAM);
 
-		if(param != null && param.trim().equals(CV_PARAM))
+		if(param != null && param.trim().equals(Constants.CV_PARAM))
 		{
-			String pathName = Utils.getProperty(CV_PARAM);
+			String pathName = Utils.getProperty(Constants.CV_PARAM);
 			byte[] data = getData(pathName);
 			
-			String fileName = Utils.getProperty(CV_FILENAME);
+			String fileName = Utils.getProperty(Constants.CV_FILENAME);
 			response.setContentType("application/msword");
 			response.setHeader("Content-disposition", "attachment; filename=\"" + fileName + "\"");
 		    response.setHeader("Cache-Control", "no-cache");
@@ -69,7 +65,7 @@ public class Download extends HttpServlet {
 		    
 		    response.getOutputStream().write(data);
 
-			Utils.incrementDownloadCounter(param);
+			Utils.incrementDownloadCounter(request);
 			logger.debug("file scaricato e contatore incrementato");
 		}
 		else
@@ -77,7 +73,6 @@ public class Download extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parameter fileName missing");
 		}
 	}
-
 	
 	protected byte[] getData(String fileName) throws IOException
 	{

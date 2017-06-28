@@ -26,7 +26,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
+import java.util.Enumeration;
 import java.util.Properties;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
@@ -106,7 +109,7 @@ public class Utils
 		}
 	}
 
-	public static void incrementDownloadCounter(String param)
+	public static void incrementDownloadCounter(HttpServletRequest request)
 	{
 		logger.debug("metodo incrementDownloadCounter()");
 		
@@ -117,9 +120,10 @@ public class Utils
 			String incrementDownloadCounterQuery = getProperty("query.incrementDownloadCounter");
 			
 			PreparedStatement statement = connection.prepareStatement(incrementDownloadCounterQuery);
-			statement.setString(1, param);
-			java.util.Date d = new java.util.Date();
-			statement.setTimestamp(2, new java.sql.Timestamp(d.getTime()));
+			statement.setString(1, request.getParameter(Constants.PARAM));
+			statement.setTimestamp(2, new java.sql.Timestamp(new java.util.Date().getTime()));
+			statement.setString(3, request.getRemoteAddr());
+			statement.setString(4, getRequestHeader(request));
 			statement.executeUpdate();
 		}
 		catch(Exception e)
@@ -185,4 +189,18 @@ public class Utils
 		return count;
 	}
 	
+	private static String getRequestHeader(HttpServletRequest request)
+	{
+		String request_header = "";
+		
+		Enumeration<String> headerNames = request.getHeaderNames();
+		while(headerNames.hasMoreElements())
+		{
+			String key = headerNames.nextElement();
+			String value = request.getHeader(key);
+			request_header += key + ": " + value + "; ";
+		}
+		
+		return request_header;
+	}
 }
