@@ -201,6 +201,8 @@ public class Utils
 			request_header += key + ": " + value + "; ";
 		}
 		
+		request_header = request_header.substring(0, request_header.length() -1);
+		
 		return request_header;
 	}
 }
